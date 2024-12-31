@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   SafeAreaView,
   TextInput,
@@ -10,49 +10,50 @@ import {
   Modal,
   TouchableOpacity,
   Alert,
-} from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-
+} from 'react-native'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { Inter_500Medium, useFonts } from '@expo-google-fonts/inter'
 export default function TodoApp() {
-  const [todos, setTodos] = useState([]);
-  const [text, setText] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentTodo, setCurrentTodo] = useState(null);
+  const [todos, setTodos] = useState([])
+  const [text, setText] = useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [currentTodo, setCurrentTodo] = useState(null)
+  const [loaded, error] = useFonts({ Inter_500Medium })
+  if (!loaded && !error) return null
 
-  // CREATE: Add a new to-do
   const addTodo = () => {
     if (text.trim() === '') {
-      Alert.alert('Invalid Input', 'Please enter a valid to-do.');
-      return;
+      Alert.alert('Invalid Input', 'Please enter a valid to-do.')
+      return
     }
     setTodos((prevTodos) => [
       ...prevTodos,
       { id: Date.now(), title: text.trim() },
-    ]);
-    setText('');
-  };
+    ])
+    setText('')
+  }
 
   // READ: Render To-Do List (Handled by FlatList)
 
   // UPDATE: Edit a to-do
   const updateTodo = () => {
     if (text.trim() === '') {
-      Alert.alert('Invalid Input', 'Please enter a valid to-do.');
-      return;
+      Alert.alert('Invalid Input', 'Please enter a valid to-do.')
+      return
     }
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
         todo.id === currentTodo.id ? { ...todo, title: text.trim() } : todo
       )
-    );
-    setIsModalVisible(false); // Close the modal
-    setText(''); // Clear input field
-  };
+    )
+    setIsModalVisible(false) // Close the modal
+    setText('') // Clear input field
+  }
 
   // DELETE: Remove a to-do
   const deleteTodo = (id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-  };
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
+  }
 
   // Render each to-do item
   const renderTodo = ({ item }) => (
@@ -61,9 +62,9 @@ export default function TodoApp() {
       <View style={styles.actions}>
         <Pressable
           onPress={() => {
-            setCurrentTodo(item);
-            setText(item.title);
-            setIsModalVisible(true); // Open the modal to edit
+            setCurrentTodo(item)
+            setText(item.title)
+            setIsModalVisible(true) // Open the modal to edit
           }}
           style={styles.actionButton}
         >
@@ -77,7 +78,7 @@ export default function TodoApp() {
         </Pressable>
       </View>
     </View>
-  );
+  )
 
   return (
     <SafeAreaView style={styles.container}>
@@ -129,7 +130,7 @@ export default function TodoApp() {
         </View>
       </Modal>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
+    fontFamily: 'Inter_500Medium',
     padding: 10,
     marginRight: 10,
     color: 'black',
@@ -173,6 +175,7 @@ const styles = StyleSheet.create({
   todoText: {
     flex: 1,
     fontSize: 16,
+    fontFamily: 'Inter_500Medium',
     color: 'black',
   },
   actions: {
@@ -208,4 +211,4 @@ const styles = StyleSheet.create({
     color: 'blue',
     fontSize: 16,
   },
-});
+})
